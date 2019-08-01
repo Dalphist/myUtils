@@ -24,7 +24,7 @@ public class FilesToFile {
 		String targetFilePath = "C:\\Users\\djf\\Desktop\\a.txt";
 		String sourcePath = "C:\\work\\git\\cis\\src\\main\\java\\com\\yusys";
 		targetFile = new File(targetFilePath);
-		File sourceFile = new File(sourcePath);
+		new File(sourcePath);
 		traverseFolder(sourcePath);
 	}
 	
@@ -48,7 +48,7 @@ public class FilesToFile {
     }
 	
 	public static List<String> excuteCopy(File sourceFile) {
-		List<String> list = new ArrayList<>();
+		List<String> list = new ArrayList<String>();
 		FileReader reader = null;
 		BufferedReader br = null;
 		try {

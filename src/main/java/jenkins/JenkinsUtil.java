@@ -10,6 +10,7 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.AuthCache;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.entity.ContentType;
@@ -28,9 +29,127 @@ import org.apache.http.util.EntityUtils;
  * @date 2019年8月1日
  */
 public class JenkinsUtil {
+	private static String jenkinsUrl = "http://172.16.90.120:8980/jenkins/";
+	
+	private static String xmlData = 
+			"<project>\r\n" + 
+			"    <keepDependencies>false</keepDependencies>\r\n" + 
+			"    <properties/>\r\n" + 
+			"    <scm class=\"hudson.scm.NullSCM\"/>\r\n" + 
+			"    <canRoam>false</canRoam>\r\n" + 
+			"    <disabled>false</disabled>\r\n" + 
+			"    <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>\r\n" + 
+			"    <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>\r\n" + 
+			"    <triggers/>\r\n" + 
+			"    <concurrentBuild>false</concurrentBuild>\r\n" + 
+			"    <builders/>\r\n" + 
+			"    <publishers/>\r\n" + 
+			"    <buildWrappers/>\r\n" + 
+			"</project>";
+	private static String xmlData1 = 
+			"<project>\r\n" + 
+			"<actions/>\r\n" + 
+			"<description/>\r\n" + 
+			"<keepDependencies>false</keepDependencies>\r\n" + 
+			"<properties/>\r\n" + 
+			"<scm class=\"hudson.plugins.git.GitSCM\" plugin=\"git@3.6.4\">\r\n" + 
+			"<configVersion>2</configVersion>\r\n" + 
+			"<userRemoteConfigs>\r\n" + 
+			"<hudson.plugins.git.UserRemoteConfig>\r\n" + 
+			"<url>\r\n" + 
+			"http://djf:f27d01d26625411aaeb9ec1110cd1661@192.168.251.101/TCTS\r\n" + 
+			"</url>\r\n" + 
+			"<credentialsId>192.168.251.101_djf</credentialsId>\r\n" + 
+			"</hudson.plugins.git.UserRemoteConfig>\r\n" + 
+			"</userRemoteConfigs>\r\n" + 
+			"<branches>\r\n" + 
+			"<hudson.plugins.git.BranchSpec>\r\n" + 
+			"<name>TCTS_DEV</name>\r\n" + 
+			"</hudson.plugins.git.BranchSpec>\r\n" + 
+			"</branches>\r\n" + 
+			"<doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>\r\n" + 
+			"<submoduleCfg class=\"list\"/>\r\n" + 
+			"<extensions/>\r\n" + 
+			"</scm>\r\n" + 
+			"<canRoam>true</canRoam>\r\n" + 
+			"<disabled>false</disabled>\r\n" + 
+			"<blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>\r\n" + 
+			"<blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>\r\n" + 
+			"<jdk>(System)</jdk>\r\n" + 
+			"<triggers/>\r\n" + 
+			"<concurrentBuild>false</concurrentBuild>\r\n" + 
+			"<builders/>\r\n" + 
+			"<publishers/>\r\n" + 
+			"<buildWrappers/>\r\n" + 
+			"</project>";
+	
+	private static String mavenDataXml = "<maven2-moduleset plugin=\"maven-plugin@3.0\">\r\n" + 
+			"<actions/>\r\n" + 
+			"<description/>\r\n" + 
+			"<keepDependencies>false</keepDependencies>\r\n" + 
+			"<properties/>\r\n" + 
+			"<scm class=\"hudson.plugins.git.GitSCM\" plugin=\"git@3.6.4\">\r\n" + 
+			"<configVersion>2</configVersion>\r\n" + 
+			"<userRemoteConfigs>\r\n" + 
+			"<hudson.plugins.git.UserRemoteConfig>\r\n" + 
+			"<url>https://github.com/Dalphist/blog.git</url>\r\n" + 
+			"<credentialsId>c7c1daae-0448-41a4-87c0-4f9143781fdc</credentialsId>\r\n" + 
+			"</hudson.plugins.git.UserRemoteConfig>\r\n" + 
+			"</userRemoteConfigs>\r\n" + 
+			"<branches>\r\n" + 
+			"<hudson.plugins.git.BranchSpec>\r\n" + 
+			"<name>*/master</name>\r\n" + 
+			"</hudson.plugins.git.BranchSpec>\r\n" + 
+			"</branches>\r\n" + 
+			"<doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>\r\n" + 
+			"<submoduleCfg class=\"list\"/>\r\n" + 
+			"<extensions/>\r\n" + 
+			"</scm>\r\n" + 
+			"<canRoam>true</canRoam>\r\n" + 
+			"<disabled>false</disabled>\r\n" + 
+			"<blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>\r\n" + 
+			"<blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>\r\n" + 
+			"<jdk>1.8</jdk>\r\n" + 
+			"<triggers/>\r\n" + 
+			"<concurrentBuild>false</concurrentBuild>\r\n" + 
+			"<rootPOM>blog-api/pom.xml</rootPOM>\r\n" + 
+			"<goals>clean package -Dmaven.test.skip=true</goals>\r\n" + 
+			"<aggregatorStyleBuild>true</aggregatorStyleBuild>\r\n" + 
+			"<incrementalBuild>false</incrementalBuild>\r\n" + 
+			"<ignoreUpstremChanges>false</ignoreUpstremChanges>\r\n" + 
+			"<ignoreUnsuccessfulUpstreams>false</ignoreUnsuccessfulUpstreams>\r\n" + 
+			"<archivingDisabled>false</archivingDisabled>\r\n" + 
+			"<siteArchivingDisabled>false</siteArchivingDisabled>\r\n" + 
+			"<fingerprintingDisabled>false</fingerprintingDisabled>\r\n" + 
+			"<resolveDependencies>false</resolveDependencies>\r\n" + 
+			"<processPlugins>false</processPlugins>\r\n" + 
+			"<mavenValidationLevel>-1</mavenValidationLevel>\r\n" + 
+			"<runHeadless>false</runHeadless>\r\n" + 
+			"<disableTriggerDownstreamProjects>false</disableTriggerDownstreamProjects>\r\n" + 
+			"<blockTriggerWhenBuilding>true</blockTriggerWhenBuilding>\r\n" + 
+			"<settings class=\"jenkins.mvn.DefaultSettingsProvider\"/>\r\n" + 
+			"<globalSettings class=\"jenkins.mvn.DefaultGlobalSettingsProvider\"/>\r\n" + 
+			"<reporters/>\r\n" + 
+			"<publishers/>\r\n" + 
+			"<buildWrappers/>\r\n" + 
+			"<prebuilders/>\r\n" + 
+			"<postbuilders>\r\n" + 
+			"<hudson.tasks.Shell>\r\n" + 
+			"<command>\r\n" + 
+			"cp ${JENKINS_HOME}/workspace/test1/blog-api/target/blog.jar /opt/yusys/jenkins/save/blog.jar\r\n" + 
+			"</command>\r\n" + 
+			"</hudson.tasks.Shell>\r\n" + 
+			"</postbuilders>\r\n" + 
+			"<runPostStepsIfResult>\r\n" + 
+			"<name>SUCCESS</name>\r\n" + 
+			"<ordinal>0</ordinal>\r\n" + 
+			"<color>BLUE</color>\r\n" + 
+			"<completeBuild>true</completeBuild>\r\n" + 
+			"</runPostStepsIfResult>\r\n" + 
+			"</maven2-moduleset>";
 
-	public static void createJob(String xmlData) throws Exception {
-		String urlString = "http://192.168.251.107:8980/jenkins/createItem?name=test666";
+	public static void createJob(String xmlData,String jobName) throws Exception {
+		String urlString = jenkinsUrl + "createItem?name=" + jobName;
 		HttpResponse response = getJenkinsRep(xmlData, urlString);
 		String result = EntityUtils.toString(response.getEntity());
 		System.out.println("create: "+result);
@@ -38,8 +157,8 @@ public class JenkinsUtil {
 	}
 
 
-	public static void updateJob(String xmlData) throws ClientProtocolException, IOException {
-		String urlString = "http://192.168.251.107:8980/jenkins/job/test666/config.xml";
+	public static void updateJob(String xmlData,String jobName) throws ClientProtocolException, IOException {
+		String urlString = jenkinsUrl + "job/"+ jobName +"/config.xml";
 		HttpResponse response = getJenkinsRep(xmlData, urlString);
 		String result = EntityUtils.toString(response.getEntity());
 		System.out.println("update: "+result);
@@ -47,23 +166,28 @@ public class JenkinsUtil {
 	}
 
 	public static void main(String[] args) throws Exception {
-		String xmlData = 
-				"<project>\r\n" + 
-				"    <keepDependencies>false</keepDependencies>\r\n" + 
-				"    <properties/>\r\n" + 
-				"    <scm class=\"hudson.scm.NullSCM\"/>\r\n" + 
-				"    <canRoam>false</canRoam>\r\n" + 
-				"    <disabled>false</disabled>\r\n" + 
-				"    <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>\r\n" + 
-				"    <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>\r\n" + 
-				"    <triggers/>\r\n" + 
-				"    <concurrentBuild>false</concurrentBuild>\r\n" + 
-				"    <builders/>\r\n" + 
-				"    <publishers/>\r\n" + 
-				"    <buildWrappers/>\r\n" + 
-				"</project>";
-		createJob(xmlData);
+		
+		createJob(mavenDataXml,"job1");
+		updateJob(xmlData1,"job1");
+		build("mavenTest1");
 	}
+
+	private static void build(String jobName) throws ClientProtocolException, IOException {
+		String urlString = jenkinsUrl + "job/"+ jobName +"/build";
+		URI uri = URI.create(urlString);
+        HttpHost host = new HttpHost(uri.getHost(), uri.getPort(), uri.getScheme());
+        CredentialsProvider credsProvider = new BasicCredentialsProvider();
+        credsProvider.setCredentials(new AuthScope(uri.getHost(), uri.getPort()), new UsernamePasswordCredentials("admin", "admin"));
+        AuthCache authCache = new BasicAuthCache();
+        BasicScheme basicAuth = new BasicScheme();
+        authCache.put(host, basicAuth);
+        CloseableHttpClient httpClient = HttpClients.custom().setDefaultCredentialsProvider(credsProvider).build();
+        HttpPost httpPost = new HttpPost(uri);
+        HttpClientContext localContext = HttpClientContext.create();
+        localContext.setAuthCache(authCache);
+        HttpResponse response = httpClient.execute(host, httpPost, localContext);
+	}
+
 
 	private static HttpResponse getJenkinsRep(String xmlData, String urlString) throws IOException, ClientProtocolException {
 		URI uri = URI.create(urlString);

@@ -10,7 +10,7 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.AuthCache;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.entity.ContentType;
@@ -22,6 +22,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
+import com.alibaba.fastjson.JSONObject;
+
 /**
  * Title: JenkinsUtil Description:调用jenkisn API
  * 
@@ -30,6 +32,95 @@ import org.apache.http.util.EntityUtils;
  */
 public class JenkinsUtil {
 	private static String jenkinsUrl = "http://172.16.90.120:8980/jenkins/";
+
+	public static void createJob(String xmlData,String jobName) throws Exception {
+		String urlString = jenkinsUrl + "createItem?name=" + jobName;
+		HttpResponse response = getJenkinsRep(xmlData, urlString);
+		String result = EntityUtils.toString(response.getEntity());
+		System.out.println("create: "+result);
+		return;
+	}
+
+
+	public static void updateJob(String xmlData,String jobName) throws ClientProtocolException, IOException {
+		String urlString = jenkinsUrl + "job/"+ jobName +"/config.xml";
+		HttpResponse response = getJenkinsRep(xmlData, urlString);
+		String result = EntityUtils.toString(response.getEntity());
+		System.out.println("update: "+result);
+		return;
+	}
+
+	public static void main(String[] args) throws Exception {
+		
+		createJob(mavenDataXml,"job1");
+		updateJob(xmlData1,"job1");
+		build("mavenTest1");
+	}
+
+	private static void build(String jobName) throws ClientProtocolException, IOException {
+		String urlString = jenkinsUrl + "job/"+ jobName +"/build";
+		URI uri = URI.create(urlString);
+        HttpHost host = new HttpHost(uri.getHost(), uri.getPort(), uri.getScheme());
+        CredentialsProvider credsProvider = new BasicCredentialsProvider();
+        credsProvider.setCredentials(new AuthScope(uri.getHost(), uri.getPort()), new UsernamePasswordCredentials("admin", "admin"));
+        AuthCache authCache = new BasicAuthCache();
+        BasicScheme basicAuth = new BasicScheme();
+        authCache.put(host, basicAuth);
+        CloseableHttpClient httpClient = HttpClients.custom().setDefaultCredentialsProvider(credsProvider).build();
+        HttpPost httpPost = new HttpPost(uri);
+        HttpClientContext localContext = HttpClientContext.create();
+        localContext.setAuthCache(authCache);
+        HttpResponse response = httpClient.execute(host, httpPost, localContext);
+	}
+
+
+	private static HttpResponse getJenkinsRep(String xmlData, String urlString) throws IOException, ClientProtocolException {
+		URI uri = URI.create(urlString);
+		HttpHost host = new HttpHost(uri.getHost(), uri.getPort(), uri.getScheme());
+		
+		// CredentialsProvider接口，凭据提供器，用来提供HTTP方法请求头认证。
+		CredentialsProvider credsProvider = new BasicCredentialsProvider();
+		// AuthScope类，认证范围，由主机（IP）、端口信息组成。
+		credsProvider.setCredentials(new AuthScope(uri.getHost(), uri.getPort()),new UsernamePasswordCredentials("admin", "admin"));
+		
+		AuthCache authCache = new BasicAuthCache();
+		BasicScheme basicAuth = new BasicScheme();
+		authCache.put(host, basicAuth);
+		
+		CloseableHttpClient httpClient = HttpClients.custom().setDefaultCredentialsProvider(credsProvider).build();
+		HttpPost httpPost = new HttpPost(uri);
+		httpPost.setEntity(new StringEntity(xmlData, ContentType.create("text/xml", "utf-8")));
+		
+		httpPost.setHeader("Content-Type", "application/xml;charset=UTF-8");
+		HttpClientContext localContext = HttpClientContext.create();
+		localContext.setAuthCache(authCache);
+		
+		HttpResponse response = httpClient.execute(host, httpPost, localContext);
+		return response;
+	}
+	
+	public static String jenkinsInfoQuery(String username, String password, String urlString)
+			throws IOException, ClientProtocolException {
+		URI uri = URI.create(urlString);
+        HttpHost host = new HttpHost(uri.getHost(), uri.getPort(), uri.getScheme());
+        CredentialsProvider credsProvider = new BasicCredentialsProvider();
+        credsProvider.setCredentials(new AuthScope(uri.getHost(), uri.getPort()), new UsernamePasswordCredentials(username, password));
+        AuthCache authCache = new BasicAuthCache();
+        BasicScheme basicAuth = new BasicScheme();
+        authCache.put(host, basicAuth);
+        CloseableHttpClient httpClient = HttpClients.custom().setDefaultCredentialsProvider(credsProvider).build();
+        HttpGet httpGet = new HttpGet(uri);
+        HttpClientContext localContext = HttpClientContext.create();
+        localContext.setAuthCache(authCache);
+        HttpResponse response = httpClient.execute(host, httpGet, localContext);
+    	return EntityUtils.toString(response.getEntity());
+	}
+
+	public static String getBuildInfoByBuildId(String jenkinsUrl, String jobName, String buildId, String username, String password) throws ClientProtocolException, IOException{
+    	String urlString  = jenkinsUrl + "/job/" + jobName + "/" + buildId + "/api/json";
+    	System.out.println(urlString + " 任务构建中……");
+    	return jenkinsInfoQuery(username, password, urlString);
+    }
 	
 	private static String xmlData = 
 			"<project>\r\n" + 
@@ -148,69 +239,47 @@ public class JenkinsUtil {
 			"</runPostStepsIfResult>\r\n" + 
 			"</maven2-moduleset>";
 
-	public static void createJob(String xmlData,String jobName) throws Exception {
-		String urlString = jenkinsUrl + "createItem?name=" + jobName;
-		HttpResponse response = getJenkinsRep(xmlData, urlString);
-		String result = EntityUtils.toString(response.getEntity());
-		System.out.println("create: "+result);
-		return;
+	public static String getJenkinsUrl() {
+		return jenkinsUrl;
 	}
 
 
-	public static void updateJob(String xmlData,String jobName) throws ClientProtocolException, IOException {
-		String urlString = jenkinsUrl + "job/"+ jobName +"/config.xml";
-		HttpResponse response = getJenkinsRep(xmlData, urlString);
-		String result = EntityUtils.toString(response.getEntity());
-		System.out.println("update: "+result);
-		return;
-	}
-
-	public static void main(String[] args) throws Exception {
-		
-		createJob(mavenDataXml,"job1");
-		updateJob(xmlData1,"job1");
-		build("mavenTest1");
-	}
-
-	private static void build(String jobName) throws ClientProtocolException, IOException {
-		String urlString = jenkinsUrl + "job/"+ jobName +"/build";
-		URI uri = URI.create(urlString);
-        HttpHost host = new HttpHost(uri.getHost(), uri.getPort(), uri.getScheme());
-        CredentialsProvider credsProvider = new BasicCredentialsProvider();
-        credsProvider.setCredentials(new AuthScope(uri.getHost(), uri.getPort()), new UsernamePasswordCredentials("admin", "admin"));
-        AuthCache authCache = new BasicAuthCache();
-        BasicScheme basicAuth = new BasicScheme();
-        authCache.put(host, basicAuth);
-        CloseableHttpClient httpClient = HttpClients.custom().setDefaultCredentialsProvider(credsProvider).build();
-        HttpPost httpPost = new HttpPost(uri);
-        HttpClientContext localContext = HttpClientContext.create();
-        localContext.setAuthCache(authCache);
-        HttpResponse response = httpClient.execute(host, httpPost, localContext);
+	public static void setJenkinsUrl(String jenkinsUrl) {
+		JenkinsUtil.jenkinsUrl = jenkinsUrl;
 	}
 
 
-	private static HttpResponse getJenkinsRep(String xmlData, String urlString) throws IOException, ClientProtocolException {
-		URI uri = URI.create(urlString);
-		HttpHost host = new HttpHost(uri.getHost(), uri.getPort(), uri.getScheme());
-		
-		// CredentialsProvider接口，凭据提供器，用来提供HTTP方法请求头认证。
-		CredentialsProvider credsProvider = new BasicCredentialsProvider();
-		// AuthScope类，认证范围，由主机（IP）、端口信息组成。
-		credsProvider.setCredentials(new AuthScope(uri.getHost(), uri.getPort()),new UsernamePasswordCredentials("admin", "admin"));
-		
-		AuthCache authCache = new BasicAuthCache();
-		BasicScheme basicAuth = new BasicScheme();
-		authCache.put(host, basicAuth);
-		
-		CloseableHttpClient httpClient = HttpClients.custom().setDefaultCredentialsProvider(credsProvider).build();
-		HttpPost httpPost = new HttpPost(uri);
-		httpPost.setEntity(new StringEntity(xmlData, ContentType.create("text/xml", "utf-8")));
-		
-		httpPost.setHeader("Content-Type", "application/xml;charset=UTF-8");
-		HttpClientContext localContext = HttpClientContext.create();
-		localContext.setAuthCache(authCache);
-		
-		HttpResponse response = httpClient.execute(host, httpPost, localContext);
-		return response;
+	public static String getXmlData() {
+		return xmlData;
 	}
+
+
+	public static void setXmlData(String xmlData) {
+		JenkinsUtil.xmlData = xmlData;
+	}
+
+
+	public static String getXmlData1() {
+		return xmlData1;
+	}
+
+
+	public static void setXmlData1(String xmlData1) {
+		JenkinsUtil.xmlData1 = xmlData1;
+	}
+
+
+	public static String getMavenDataXml() {
+		return mavenDataXml;
+	}
+
+
+	public static void setMavenDataXml(String mavenDataXml) {
+		JenkinsUtil.mavenDataXml = mavenDataXml;
+	}
+
+
+	
+	
+	
 }

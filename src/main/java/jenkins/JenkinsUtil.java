@@ -2,6 +2,8 @@ package jenkins;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -22,8 +24,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-import com.alibaba.fastjson.JSONObject;
-
 /**
  * Title: JenkinsUtil Description:调用jenkisn API
  * 
@@ -33,6 +33,23 @@ import com.alibaba.fastjson.JSONObject;
 public class JenkinsUtil {
 	private static String jenkinsUrl = "http://172.16.90.120:8980/jenkins/";
 
+	public static String getCoberturaReport(String jenkinsUrl, String jobName, String username, String password) throws IOException {
+        //这里需要CIS_SERVER_INFO的构建服务器地址 CIS_SERVER_INFO_ADDITIONAL的jenkins用户名密码
+//        ServerInfo buildServerInfo = serverInfoService.getServerInfoListByType("01").get(0);
+//        String url= "http://" + buildServerInfo.getServerIp() + ":" + buildServerInfo.getServerinfoAdditional().getPort() + "/jenkins";
+        String jkLogUrlFormat=jenkinsUrl.concat("/job/%s/lastCompletedBuild/");
+        String jkLogUrl=String.format(jkLogUrlFormat, jobName);
+        String jkContent = jenkinsInfoQuery(username,password,jkLogUrl);
+        String pattern = "[\\s\\S]*?<b>Lines</b>[\\s\\S]*?(\\d+)?%[\\s\\S]*";
+        Pattern r = Pattern.compile(pattern);
+        Matcher m = r.matcher(jkContent);
+        if(m.find()){
+            return m.group(1);
+        }else {
+            return "0%";
+        }
+    }
+	
 	public static void createJob(String xmlData,String jobName) throws Exception {
 		String urlString = jenkinsUrl + "createItem?name=" + jobName;
 		HttpResponse response = getJenkinsRep(xmlData, urlString);
@@ -52,9 +69,11 @@ public class JenkinsUtil {
 
 	public static void main(String[] args) throws Exception {
 		
-		createJob(mavenDataXml,"job1");
-		updateJob(xmlData1,"job1");
-		build("mavenTest1");
+//		createJob(mavenDataXml,"job1");
+//		updateJob(xmlData1,"job1");
+//		build("mavenTest1");
+		String s = getCoberturaReport("http://192.168.251.107:8980/jenkins/","cis定时扫描","admin","admin");
+		System.out.println(s);
 	}
 
 	private static void build(String jobName) throws ClientProtocolException, IOException {

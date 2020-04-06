@@ -16,13 +16,13 @@ public class ExportFileList {
 	private static String listFilePath;
 
 	public static void main(String[] args) throws Exception {
-//		sourcePath = "C:\\work\\git\\dev_cis\\";
-//		targetPath = "D:\\temp\\dev_cis\\";
-//		listFilePath = "D:\\temp\\list.txt";
+		sourcePath = "E:\\yusysTemp\\testA";
+		targetPath = "F:\\temp\\testA";
+		listFilePath = "F:\\temp\\test.txt";
 		
-		sourcePath = System.getProperty("sourcePath");
-		targetPath = System.getProperty("targetPath");
-		listFilePath = System.getProperty("listFilePath");
+//		sourcePath = System.getProperty("sourcePath");
+//		targetPath = System.getProperty("targetPath");
+//		listFilePath = System.getProperty("listFilePath");
 		delAllFile(targetPath); 
 		moveChangedFiles();
 	}
@@ -76,10 +76,15 @@ public class ExportFileList {
 	    String tempString = null;
 	    try {
 	        reader = new BufferedReader(new FileReader(file));
+	        int count = 0;
 	        while ((tempString = reader.readLine()) != null) {
-	        	copyFile(tempString, targetPath);
-	        	System.out.println("导出文件：" + sourcePath + tempString + "\t 至 " + targetPath);
+	        	//获取相对路径
+	        	String relativePath = tempString.substring(sourcePath.length());
+	        	copyFile(relativePath, targetPath);
+	        	System.out.println("导出文件：" + sourcePath + relativePath + "\t 至 " + targetPath);
+	        	count ++;
 	        }
+	        System.out.println("共计导出 " + count + "个文件。");
 	        reader.close();
 	    } catch (FileNotFoundException e) {
 	        e.printStackTrace();
@@ -99,7 +104,7 @@ public class ExportFileList {
 	private static void copyFile(String relativePath, String targetPath) throws Exception {
 		File sourceFile = new File(sourcePath + relativePath);
 		if (!sourceFile.exists()) {
-			return;
+			throw new RuntimeException(sourcePath + relativePath + " 文件不存在！");
 		}
 		FileInputStream input = new FileInputStream(sourceFile);
 		BufferedInputStream inBuff = new BufferedInputStream(input);

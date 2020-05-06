@@ -16,9 +16,9 @@ public class ExportFileList {
 	private static String listFilePath;
 
 	public static void main(String[] args) throws Exception {
-		sourcePath = "E:\\yusysTemp\\testA";
-		targetPath = "F:\\temp\\testA";
-		listFilePath = "F:\\temp\\test.txt";
+		sourcePath = "D:\\temp\\CDM";
+		targetPath = "D:\\temp\\CDM1";
+		listFilePath = "D:\\1.txt";
 		
 //		sourcePath = System.getProperty("sourcePath");
 //		targetPath = System.getProperty("targetPath");
@@ -80,6 +80,10 @@ public class ExportFileList {
 	        while ((tempString = reader.readLine()) != null) {
 	        	//获取相对路径
 	        	String relativePath = tempString.substring(sourcePath.length());
+	        	File tempFile = new File(tempString);
+	        	if(tempFile.isDirectory()) {
+	        		continue;
+	        	}
 	        	copyFile(relativePath, targetPath);
 	        	System.out.println("导出文件：" + sourcePath + relativePath + "\t 至 " + targetPath);
 	        	count ++;

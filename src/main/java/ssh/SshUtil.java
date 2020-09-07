@@ -48,9 +48,9 @@ public class SshUtil {
 	}
 
 	public static void main(String[] args) throws JSchException, IOException {
-		DestHost dest = new DestHost("192.168.251.101", "root", "101@yusys.com");
+		DestHost dest = new DestHost("192.168.251.107", "root", "107@yusys.com");
 		Session session = getJSchSession(dest);
-		String command = "cd /opt/yusys/data/git/ECAS && /opt/yusys/git/bin/git  branch ECAS_AOT";
+//		String command = "cd /opt/yusys/data/git/ECAS && /opt/yusys/git/bin/git  branch ECAS_AOT";
 //		String command1 = "cd /opt/yusys/data/git/TCTS/";
 		/**
 		 * 一次性执行多条shell的方法：
@@ -69,6 +69,7 @@ public class SshUtil {
 //		String command3 = "nohup sh /home/weblogic/Oracle/Middleware/user_projects/domains/base_domain/bin/startWebLogic.sh &";
 //		execCommandByJSch(session, command1, "");
 //		execCommandByJSch(session, command3, "");
+		String command = "nohup java -jar /opt/platform/platform-devops-core.jar > /opt/platform/devops.out 2>&1 &";
 		execCommandByJSch(session, command, "");
 	}
 	

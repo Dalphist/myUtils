@@ -22,7 +22,7 @@ public class FilesToFile {
 	
 	public static void main(String[] args) {
 		String targetFilePath = "C:\\Users\\djf\\Desktop\\a.txt";
-		String sourcePath = "C:\\work\\git\\cis\\src\\main\\java\\com\\yusys";
+		String sourcePath = "C:\\work\\git\\devops\\platform-devops";
 		targetFile = new File(targetFilePath);
 		new File(sourcePath);
 		traverseFolder(sourcePath);
@@ -39,8 +39,10 @@ public class FilesToFile {
                     if (file2.isDirectory()) {
                         traverseFolder(file2.getAbsolutePath());
                     } else {
-                        System.out.println("文件:" + file2.getAbsolutePath());
-                        excuteCopy(file2);
+                        if(file2.getName().indexOf(".java") > 0){
+                            System.out.println("文件:" + file2.getAbsolutePath());
+							excuteCopy(file2);
+						}
                     }
                 }
             }

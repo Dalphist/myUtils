@@ -31,7 +31,7 @@ import org.apache.http.util.EntityUtils;
  * @date 2019年8月1日
  */
 public class JenkinsUtil {
-	private static String jenkinsUrl = "http://172.16.90.120:8980/jenkins/";
+	private static String jenkinsUrl = "http://192.168.251.107/:8980/jenkins/";
 
 	public static String getCoberturaReport(String jenkinsUrl, String jobName, String username, String password) throws IOException {
         //这里需要CIS_SERVER_INFO的构建服务器地址 CIS_SERVER_INFO_ADDITIONAL的jenkins用户名密码
@@ -72,7 +72,8 @@ public class JenkinsUtil {
 //		createJob(mavenDataXml,"job1");
 //		updateJob(xmlData1,"job1");
 //		build("mavenTest1");
-		String s = getCoberturaReport("http://192.168.251.107:8980/jenkins/","cis定时扫描","admin","admin");
+//		String s = getCoberturaReport("http://192.168.251.107:8980/jenkins/","cis定时扫描","admin","admin");
+		String s = jenkinsInfoQuery("admin","admin","http://192.168.251.107:8980/jenkins/job/730_devops_bak/73/console");
 		System.out.println(s);
 	}
 

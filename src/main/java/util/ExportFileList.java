@@ -27,7 +27,7 @@ public class ExportFileList {
 		moveChangedFiles();
 	}
 
-	// 删除路径下所有文件
+	// 删除目标路径下所有文件
 	private static boolean delAllFile(String path) {
 		boolean flag = false;
 		File file = new File(path);

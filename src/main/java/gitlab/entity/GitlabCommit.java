@@ -16,8 +16,10 @@ public class GitlabCommit {
     private String author_name;
     private String authored_date;
     private String committer_name;
+    private String committed_date;
     private String title;
     private String message;
     private CommitStats stats;
+    private String project_id;
 
 }

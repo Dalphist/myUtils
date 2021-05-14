@@ -1,0 +1,15 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  servlet:
+    multipart:
+      enabled: true #是否处理上传
+      max-file-size: 50MB #允许最大的单个上传大小，单位可以是kb
+      max-request-size: 50MB #允许最大请求大小
+
+#文件上传目录
+fileUploadPath: E://test//
+
+openoffice:
+  officeHome: C:\Program Files (x86)\OpenOffice 4  #openoffice的安装路径
+  officePort: 8100   #openoffice启动端口

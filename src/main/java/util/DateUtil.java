@@ -1,6 +1,7 @@
 package util;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author DJF
@@ -14,5 +15,9 @@ public class DateUtil {
         LocalDate localDate = LocalDate.now();
         LocalDate localDateBefore = localDate.minusDays(7);
         System.out.println(localDateBefore);
+
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String dateStr = localDate.format(fmt);
+        System.out.println(dateStr);
     }
 }

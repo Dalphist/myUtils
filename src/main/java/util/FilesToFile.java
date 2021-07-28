@@ -1,5 +1,7 @@
 package util;
 
+import org.springframework.util.StringUtils;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -22,7 +24,7 @@ public class FilesToFile {
 	
 	public static void main(String[] args) {
 		String targetFilePath = "C:\\Users\\djf\\Desktop\\a.txt";
-		String sourcePath = "C:\\work\\git\\devops\\platform-devops";
+		String sourcePath = "C:\\work\\git\\dmp\\platform-dmp";
 		targetFile = new File(targetFilePath);
 		new File(sourcePath);
 		traverseFolder(sourcePath);
@@ -58,7 +60,9 @@ public class FilesToFile {
 			br = new BufferedReader(reader);
 			String str = null;
 			while ((str = br.readLine()) != null) {
-				write(str,targetFile);
+				if(!StringUtils.isEmpty(str)){
+                    write(str,targetFile);
+                }
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

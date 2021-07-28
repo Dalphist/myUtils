@@ -51,14 +51,14 @@
     <orderEntry type="library" scope="TEST" name="Maven: jakarta.xml.bind:jakarta.xml.bind-api:2.3.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: jakarta.activation:jakarta.activation-api:1.2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter:5.5.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-api:5.5.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.opentest4j:opentest4j:1.2.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-commons:1.5.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.junit.jupiter:junit-jupiter-api:5.5.2" level="project" />
+    <orderEntry type="library" name="Maven: org.opentest4j:opentest4j:1.2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.junit.platform:junit-platform-commons:1.5.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-params:5.5.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-engine:5.5.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.junit.jupiter:junit-jupiter-engine:5.5.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.vintage:junit-vintage-engine:5.5.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apiguardian:apiguardian-api:1.1.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-engine:1.5.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apiguardian:apiguardian-api:1.1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.junit.platform:junit-platform-engine:1.5.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.mockito:mockito-junit-jupiter:3.1.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.assertj:assertj-core:3.13.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest:2.1" level="project" />
@@ -128,5 +128,41 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.12.0" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:3.0.8" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy:2.5.8" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-ant:2.5.8" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.ant:ant:1.9.13" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.ant:ant-junit:1.9.13" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.ant:ant-launcher:1.9.13" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.ant:ant-antlr:1.9.13" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-astbuilder:3.0.8" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-cli-picocli:2.5.8" level="project" />
+    <orderEntry type="library" name="Maven: info.picocli:picocli:4.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-console:2.5.8" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-datetime:2.5.8" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-docgenerator:2.5.8" level="project" />
+    <orderEntry type="library" name="Maven: com.thoughtworks.qdox:qdox:1.12.1" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-groovydoc:2.5.8" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-groovysh:2.5.8" level="project" />
+    <orderEntry type="library" name="Maven: jline:jline:2.14.6" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-jmx:2.5.8" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-json:2.5.8" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-jsr223:2.5.8" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-macro:2.5.8" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-nio:2.5.8" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-servlet:2.5.8" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-sql:2.5.8" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-swing:2.5.8" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-templates:2.5.8" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-test:2.5.8" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-test-junit5:2.5.8" level="project" />
+    <orderEntry type="library" name="Maven: org.junit.platform:junit-platform-launcher:1.5.2" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-testng:2.5.8" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.testng:testng:6.13.1" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-xml:2.5.8" level="project" />
+    <orderEntry type="library" name="Maven: com.google.zxing:core:3.4.1" level="project" />
+    <orderEntry type="library" name="Maven: com.google.zxing:javase:3.4.1" level="project" />
+    <orderEntry type="library" name="Maven: com.beust:jcommander:1.78" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: com.github.jai-imageio:jai-imageio-core:1.4.0" level="project" />
   </component>
 </module>

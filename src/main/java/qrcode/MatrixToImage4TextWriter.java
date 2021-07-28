@@ -277,10 +277,16 @@ public class MatrixToImage4TextWriter {
             g2d.fillRect(0,0,700,500);//填充整个屏幕
             g2d.setColor(Color.BLACK); //设置笔刷
             g2d.drawImage(barCodeImage, 50, 250, 200, 200, null);
+
             //标题样式
             g2d.setFont(new Font("粗体", 1, 50));
             //标题
-            g2d.drawString(title, 50, 150);
+            g2d.drawString(title, 50, 180);
+
+            //内容样式
+            g2d.setFont(new Font("粗体", 1, 45));
+
+            g2d.drawString("箱码号：1654", 370, 80);
 
             //内容样式
             g2d.setFont(new Font("黑体", 1, 33));

@@ -45,8 +45,8 @@ public class Test {
             hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
 
 		     BitMatrix bitMatrix = multiFormatWriter.encode(content, BarcodeFormat.QR_CODE, 400, 400,hints);
-		     File file1 = new File(path,"qrcode.jpg");
-		     MatrixToImageWriter.writeToFile(bitMatrix, "jpg", file1);
+//		     File file1 = new File(path,"qrcode.jpg");
+//		     MatrixToImageWriter.writeToFile(bitMatrix, "jpg", file1);
 
             // 生成流
             MatrixToImageConfig matrixToImageConfig = new MatrixToImageConfig();

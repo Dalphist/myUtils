@@ -93,7 +93,7 @@ public class ShellConnectionStream {
     }
 
     public String execSingleCommand(String shell) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         try {
             channel = session.openChannel("shell");
             ChannelShell channelShell = (ChannelShell) channel;
@@ -110,7 +110,7 @@ public class ShellConnectionStream {
             while (inputStream.available() > 0) {
                 int i = inputStream.read(tmp, 0, 1024);
                 String s = new String(tmp, 0, i);
-                System.out.println(s);
+                result.append(s);
                 try {
                     Thread.sleep(1000);
                 } catch (Exception e) {
@@ -123,7 +123,7 @@ public class ShellConnectionStream {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return result;
+        return result.toString();
     }
 
     public String execCommandByShell(List<String> shellList) {

@@ -8,8 +8,8 @@ import org.junit.Test;
 import com.alibaba.fastjson.JSONObject;
 
 public class JenkinsTest {
-	private static String jenkinsUrl = "http://192.168.251.107:8980/jenkins/";
-	private static String jobName = "cis_sonar_flow";
+	private static String jenkinsUrl = "http://192.168.46.22:8980/jenkins/";
+	private static String jobName = "board_board";
 	
 	
 	//获取jenkins任务执行结果

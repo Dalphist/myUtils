@@ -1,6 +1,7 @@
 package test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,24 +14,11 @@ import java.util.stream.Collectors;
  **/
 public class Test {
     public static void main(String[] args) {
-        Student s1 = new Student();
-        s1.setName("aa");
+        String[] aa = {"1","2"};
+        System.out.println(Arrays.toString(aa));
 
-        Student s2 = new Student();
-        s2.setName("bb");
-
-        List<Student> list1 = new ArrayList<>();
-        list1.add(s1);
-        list1.add(s2);
-
-        List<User> list2 = new ArrayList<>();
-
-        list2 = list1.stream().map(s -> {
-            User u = new User();
-            u.setName(s.getName());
-            return u;
-        }).collect(Collectors.toList());
-
+        String bb = "[" + 1 + "," + 2 + "]";
+        System.out.println(bb);
 
     }
 }

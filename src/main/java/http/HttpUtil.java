@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -64,8 +65,8 @@ public class HttpUtil {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		String url = "http://192.168.251.107:9000/api/issues/search?componentKeys=dev_cis&s=FILE_LINE&resolved=false&ps=1&facets=types";
-		String json = doGet(url);
+		String url = "http://139.159.235.103:8082/pda/api/getInventoryOrganizationList?ID&Ioname";
+		String json = doPost(url,new HashMap<>());
 		
 		JSONObject obj = JSONObject.parseObject(json);
 		String facets = obj.getString("facets");

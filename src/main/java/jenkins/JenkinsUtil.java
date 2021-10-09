@@ -31,7 +31,7 @@ import org.apache.http.util.EntityUtils;
  * @date 2019年8月1日
  */
 public class JenkinsUtil {
-	private static String jenkinsUrl = "http://192.168.251.107:8980/jenkins/";
+	private static String jenkinsUrl = "http://192.168.46.22:8980/jenkins/";
 
 	public static String getCoberturaReport(String jenkinsUrl, String jobName, String username, String password) throws IOException {
         //这里需要CIS_SERVER_INFO的构建服务器地址 CIS_SERVER_INFO_ADDITIONAL的jenkins用户名密码
